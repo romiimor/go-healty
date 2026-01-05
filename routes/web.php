@@ -35,7 +35,12 @@ Route::resource('makanan', MakananController::class);
 
 use App\Http\Controllers\OlahragaController;
 
-Route::get('/olahraga', [OlahragaController::class, 'index'])->middleware('auth')->name('olahraga');
+// Resource routes for olahraga (index, create, store, edit, update, destroy)
+Route::resource('olahraga', OlahragaController::class)->middleware('auth');
+use App\Http\Controllers\BMIController;
+
+// Halaman BMI (menggunakan controller, memerlukan login)
+Route::get('/BMI', [BMIController::class, 'index'])->middleware('auth')->name('bmi');
 
 use App\Http\Controllers\ProfilController;
 

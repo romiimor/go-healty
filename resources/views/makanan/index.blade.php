@@ -11,6 +11,60 @@
         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded">{{ session('success') }}</div>
     @endif
 
+    <div class="bg-white shadow-md rounded-2xl p-6 mb-8">
+        <h2 class="text-xl font-semibold text-green-700 mb-4">Rekomendasi Makanan</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-left">
+                <thead>
+                    <tr class="text-sm text-gray-600">
+                        <th class="px-4 py-2">Untuk Diet</th>
+                        <th class="px-4 py-2">Untuk Menambah Berat Badan</th>
+                        <th class="px-4 py-2">Untuk Menjaga Berat Badan</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm text-gray-700">
+                    <tr class="align-top">
+                        <td class="px-4 py-3">
+                            <ul class="list-disc ml-5">
+                                <li>Sayuran hijau (bayam, kale)</li>
+                                <li>Buah rendah gula (apel, beri)</li>
+                                <li>Protein tanpa lemak (ikan, ayam tanpa kulit)</li>
+                                <li>Yoghurt rendah lemak</li>
+                                <li>Biji-bijian utuh (oat, quinoa)</li>
+                                <li>Kacang-kacangan dalam porsi terkontrol</li>
+                            </ul>
+                        </td>
+                        <td class="px-4 py-3">
+                            <ul class="list-disc ml-5">
+                                <li>Kacang-kacangan & selai kacang</li>
+                                <li>Alpukat dan minyak sehat</li>
+                                <li>Ikan berlemak (salmon)</li>
+                                <li>Daging merah tanpa lemak</li>
+                                <li>Susu penuh lemak, keju</li>
+                                <li>Pati sehat (ubi, kentang) dan nasi</li>
+                                <li>Smoothie kalori-dense (pisang, susu, selai kacang)</li>
+                            </ul>
+                        </td>
+                        <td class="px-4 py-3">
+                            <ul class="list-disc ml-5">
+                                <li>Porsi terkontrol dari protein dan karbohidrat</li>
+                                <li>Banyak sayur berwarna</li>
+                                <li>Buah segar sebagai camilan</li>
+                                <li>Biji-bijian utuh untuk energi stabil</li>
+                                <li>Lemak sehat (minyak zaitun, ikan)</li>
+                                <li>Air putih cukup & snack sehat (yoghurt)</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-6 bg-green-50 border-l-4 border-green-200 p-4 rounded">
+            <h3 class="font-semibold text-green-700">Tambahan Makanan</h3>
+            <p class="text-sm text-gray-700 mt-1">Contoh tambahan: buah kering, kacang-kacangan, susu/inang-infused water, dan suplemen protein jika diperlukan. Gunakan sesuai kebutuhan dan konsultasi jika perlu.</p>
+        </div>
+    </div>
+
     <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
         @foreach ($makanans as $makanan)
         <div class="bg-white shadow-md rounded-2xl p-4 hover:shadow-lg">

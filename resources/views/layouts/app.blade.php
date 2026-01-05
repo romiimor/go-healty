@@ -5,21 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Go-Healthy</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script> 
 </head>
 <body class="bg-gray-50 text-gray-800">
-    <!-- Navbar -->
     <nav class="flex justify-between items-center px-8 py-4 bg-white shadow-md fixed top-0 left-0 right-0 z-50">
         <div class="flex items-center space-x-2">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-8">
             <span class="font-bold text-green-600 text-xl">Go-Healthy</span>
         </div>
-        <ul class="flex space-x-6 text-sm font-medium">
+            <ul class="flex space-x-6 text-sm font-medium">
             <li><a href="{{ url('/') }}" class="hover:text-green-600">Beranda</a></li>
             <li><a href="{{ url('/makanan') }}" class="hover:text-green-600">Makanan</a></li>
-            <li><a href="{{ route('olahraga') }}" class="text-gray-800 hover:text-green-600">Olahraga</a></li>
-            <li><a href="{{ url('/kalori') }}" class="hover:text-green-600">Kalori</a></li>
-            <li><a href="{{ route('profil.edit') }}" class="text-gray-800 hover:text-green-600">Edit Profil</a></li>
-            <li><a href="{{ route('riwayat.index') }}" class="hover:text-green-600 transition">Riwayat</a></li>
+            <li><a href="{{ route('bmi') }}" class="text-gray-800 hover:text-green-600">Badan massa Index (BMI)</a></li>
+            <li><a href="{{ route('olahraga.index') }}" class="hover:text-green-600">Olahraga</a></li>
+            <li><a href="{{ route('profil.edit') }}" class="text-gray-800 hover:text-green-600">Profil dan Riwayat</a></li>
         </ul>
         @auth
             <form action="{{ route('logout') }}" method="POST">

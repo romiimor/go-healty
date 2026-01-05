@@ -4,120 +4,31 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Olahraga;
-use Illuminate\Support\Facades\Storage;
 
-class OlahragaController extends Controller
+class BMIController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
 
-        // Pencegahan: Cek kelengkapan data
         if (!$user || !$user->tinggi_badan || !$user->berat_badan) {
             return redirect()->route('home')->with('error', 'Lengkapi data tinggi dan berat badan Anda terlebih dahulu.');
         }
 
-        // Hitung BMI (Body Mass Index)
         $tinggiMeter = $user->tinggi_badan / 100;
-        // Penanganan error pembagian dengan nol
         if ($tinggiMeter == 0) {
             return redirect()->route('home')->with('error', 'Tinggi badan tidak valid.');
         }
-        
+
         $bmi = $user->berat_badan / ($tinggiMeter * $tinggiMeter);
 
-        // Tentukan kategori dan saran utama
         [$kategori, $saran] = $this->analyzeBmiCategory($bmi);
 
-        // Tentukan rekomendasi olahraga berdasarkan kategori
         $rekomendasi = $this->getRekomendasiOlahraga($kategori);
 
-        // Ambil daftar olahraga dari DB (jika ada)
-        $olahragas = Olahraga::latest()->get();
-
-        return view('olahraga.index', compact('user', 'bmi', 'kategori', 'saran', 'rekomendasi', 'olahragas'));
+        return view('BMI.index', compact('user', 'bmi', 'kategori', 'saran', 'rekomendasi'));
     }
 
-    /**
-     * Tampilkan form sederhana untuk menambah entri olahraga.
-     */
-    public function create()
-    {
-        return view('olahraga.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'nama' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:5120',
-        ]);
-
-        if ($request->hasFile('gambar')) {
-            $path = $request->file('gambar')->store('olahraga', 'public');
-            $data['gambar'] = $path; // stored in storage/app/public/olahraga/...
-        }
-
-        $olahraga = Olahraga::create($data);
-
-        return redirect()->route('olahraga.index')->with('success', 'Olahraga berhasil ditambahkan.');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Olahraga $olahraga)
-    {
-        return view('olahraga.edit', compact('olahraga'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Olahraga $olahraga)
-    {
-        $data = $request->validate([
-            'nama' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:5120',
-        ]);
-
-        if ($request->hasFile('gambar')) {
-            // Hapus file lama jika ada di storage
-            if ($olahraga->gambar && Storage::disk('public')->exists($olahraga->gambar)) {
-                Storage::disk('public')->delete($olahraga->gambar);
-            }
-            $path = $request->file('gambar')->store('olahraga', 'public');
-            $data['gambar'] = $path;
-        }
-
-        $olahraga->update($data);
-
-        return redirect()->route('olahraga.index')->with('success', 'Olahraga berhasil diperbarui.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Olahraga $olahraga)
-    {
-        if ($olahraga->gambar && Storage::disk('public')->exists($olahraga->gambar)) {
-            Storage::disk('public')->delete($olahraga->gambar);
-        }
-
-        $olahraga->delete();
-
-        return redirect()->route('olahraga.index')->with('success', 'Olahraga berhasil dihapus.');
-    }
-
-    /**
-     * Menentukan kategori BMI dan saran utama.
-     */
     protected function analyzeBmiCategory(float $bmi): array
     {
         if ($bmi < 18.5) {
@@ -131,9 +42,6 @@ class OlahragaController extends Controller
         }
     }
 
-    /**
-     * Mendapatkan rekomendasi olahraga rinci berdasarkan kategori BMI.
-     */
     protected function getRekomendasiOlahraga(string $kategori): array
     {
         return match ($kategori) {

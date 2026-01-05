@@ -33,7 +33,7 @@ class MakananController extends Controller
         $gambarPath = null;
         if ($request->hasFile('gambar')) {
             $gambarPath = $request->file('gambar')->store('makanan', 'public');
-            $makanan->gambar = $path;
+            
         }
 
         Makanan::create([
