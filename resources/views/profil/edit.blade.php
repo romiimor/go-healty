@@ -1,154 +1,167 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto mt-10 p-6 max-w-4xl" x-data="profilData">
-    <h1 class="text-3xl font-bold text-green-700 mb-6 text-center">Profil & Riwayat Data Tubuh</h1>
+<div class="min-h-screen pt-24 pb-12" style="background-color: #FFFDF5;">
+    @php
+        // choose hero image: prefer team images, fallback to kedai
+        $heroImg = null;
+        $teamPath = public_path('images/Tim kami');
+        if (file_exists($teamPath)) {
+            foreach (scandir($teamPath) as $f) {
+                if (in_array($f, ['.', '..'])) continue;
+                $ext = pathinfo($f, PATHINFO_EXTENSION);
+                if (!in_array(strtolower($ext), ['jpg','jpeg','png','webp','gif'])) continue;
+                $heroImg = asset('images/' . rawurlencode('Tim kami') . '/' . rawurlencode($f));
+                break;
+            }
+        }
+        if (!$heroImg) {
+            $kedaiPath = public_path('images/kedai');
+            if (file_exists($kedaiPath)) {
+                foreach (scandir($kedaiPath) as $f) {
+                    if (in_array($f, ['.', '..'])) continue;
+                    $ext = pathinfo($f, PATHINFO_EXTENSION);
+                    if (!in_array(strtolower($ext), ['jpg','jpeg','png','webp','gif'])) continue;
+                    $heroImg = asset('images/kedai/' . rawurlencode($f));
+                    break;
+                }
+            }
+        }
+        if (!$heroImg) {
+            $heroImg = asset('images/logo.png');
+        }
+    @endphp
 
-    @if (session('success'))
-        <div class="bg-green-100 text-green-700 p-3 rounded mb-4 text-center shadow-md">
-            {{ session('success') }}
+    <section class="relative w-full bg-cover bg-center" style="background-image: url('{{ $heroImg }}')">
+        <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"></div>
+        <div class="relative max-w-7xl mx-auto px-6 py-20 md:py-32">
+            <div class="bg-black/30 backdrop-blur-sm p-6 md:p-10 rounded-2xl max-w-3xl">
+                <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight mb-3 drop-shadow-lg leading-tight">Tentang <span class="text-orange-300">Kedai Romi</span></h1>
+                <p class="text-white/95 text-lg md:text-xl mb-6">Cerita, misi, dan komunitas kami — bergabunglah bersama coffee indonesia.</p>
+                <a href="{{ route('makanan.index') }}" class="inline-block w-full sm:w-auto text-center bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 shadow-lg ring-2 ring-transparent focus:ring-orange-300">Lihat Menu</a>
+            </div>
         </div>
-    @endif
+    </section>
 
-    {{-- Tabs Navigation --}}
-    <div class="flex border-b border-gray-300 mb-6">
-        <button @click="tab = 'edit'" :class="{ 'border-green-500 text-green-700 font-semibold': tab === 'edit', 'border-transparent text-gray-500': tab !== 'edit' }"
-            class="py-2 px-4 border-b-2 hover:text-green-600 transition duration-150">
-            Edit Data Tubuh
-        </button>
-        <button @click="tab = 'riwayat'" :class="{ 'border-green-500 text-green-700 font-semibold': tab === 'riwayat', 'border-transparent text-gray-500': tab !== 'riwayat' }"
-            class="py-2 px-4 border-b-2 hover:text-green-600 transition duration-150">
-            Riwayat Berat Badan
-        </button>
+    <div class="max-w-7xl mx-auto px-6 mt-8">
+        <div class="grid lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-xl border border-gray-50">
+                <h2 class="text-2xl font-extrabold text-green-800 mb-4">@if(!empty($about->title)){{ $about->title }}@else Siapa Kami @endif</h2>
+                <p class="text-gray-700 mb-4">@if(!empty($about->description)){{ $about->description }}@else Kedai Romi adalah tempat berkumpulnya pencinta makanan sehat dan lezat di Pasar Senen Blok 1. Kami menyediakan menu yang dibuat dari bahan pilihan, mengutamakan rasa dan gizi seimbang.@endif</p>
+
+                <h3 class="text-xl font-bold text-gray-800 mt-6 mb-2">Misi Kami</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                    <li>Menyediakan makanan sehat yang lezat dan terjangkau.</li>
+                    <li>Mengedukasi pelanggan tentang pola makan seimbang.</li>
+                    <li>Mendukung komunitas lokal dan pemasok setempat.</li>
+                </ul>
+
+                <h3 class="text-xl font-bold text-gray-800 mt-6 mb-2">Nilai Kami</h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    @php
+                        $values = [];
+                        if (!empty($about->values)) {
+                            $values = explode('|', $about->values);
+                        }
+                    @endphp
+                    @if(!empty($values))
+                        @foreach($values as $v)
+                            <div class="p-4 rounded-lg bg-green-50 border">
+                                <h4 class="font-bold text-green-700">{{ $v }}</h4>
+                                <p class="text-sm text-gray-600">&nbsp;</p>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="p-4 rounded-lg bg-green-50 border">
+                            <h4 class="font-bold text-green-700">Nilai</h4>
+                            <p class="text-sm text-gray-600">98%</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-orange-50 border">
+                            <h4 class="font-bold text-orange-600">Keaslian</h4>
+                            <p class="text-sm text-gray-600">100%</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-gray-50 border">
+                            <h4 class="font-bold text-gray-700">Komunitas</h4>
+                            <p class="text-sm text-gray-600">coffee indonesia</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-xl border border-gray-50">
+                <h2 class="text-2xl font-extrabold text-green-800 mb-4">Info Kontak</h2>
+                <p class="text-gray-700 mb-2"><strong>Alamat:</strong> {{ $about->address ?? 'Pasar Senen Blok 1, Jakarta Pusat' }}</p>
+                <p class="text-gray-700 mb-2"><strong>Telepon:</strong> {{ $about->phone ?? '(087738401820) -' }}</p>
+                <p class="text-gray-700 mb-4"><strong>Email:</strong> {{ $about->email ?? 'info@kedaIromi.example' }}</p>
+
+                <h3 class="text-lg font-bold text-gray-800 mb-2">Jam Operasional</h3>
+                <p class="text-gray-600 mb-4">Senin - Sabtu: 08:00 - 18:00</p>
+
+                <h3 class="text-lg font-bold text-gray-800 mb-2">Lokasi di Peta</h3>
+                <div class="rounded overflow-hidden mb-4">
+                    <iframe class="w-full h-48" src="https://www.google.com/maps?q={{ urlencode($about->address ?? 'Pasar Senen Blok 1 Jakarta Pusat') }}&output=embed" frameborder="0" allowfullscreen></iframe>
+                </div>
+
+                <a href="{{ route('makanan.index') }}" class="inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Lihat Katalog Menu</a>
+                @if(auth()->check() && auth()->user()->isAdmin())
+                    <a href="{{ route('admin.about.edit') }}" class="inline-block ml-2 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600">Edit About</a>
+                @endif
+            </div>
+        </div>
     </div>
+    
+    <div class="max-w-7xl mx-auto px-6 mt-8">
+        <h3 class="text-xl font-bold mb-4">Tim Kami</h3>
+        @php
+            if (empty($teamImages) || !count($teamImages)) {
+                $teamImages = [];
+                $teamPath = public_path('images/Tim kami');
+                if (file_exists($teamPath)) {
+                    foreach (scandir($teamPath) as $f) {
+                        if (in_array($f, ['.', '..'])) continue;
+                        $ext = pathinfo($f, PATHINFO_EXTENSION);
+                        if (!in_array(strtolower($ext), ['jpg','jpeg','png','webp','gif'])) continue;
+                        $teamImages[] = 'images/' . rawurlencode('Tim kami') . '/' . rawurlencode($f);
+                    }
+                }
+            }
+        @endphp
 
-    {{-- Tab Content: Edit Data Tubuh --}}
-    <div x-show="tab === 'edit'" class="bg-white p-6 rounded-xl shadow-lg max-w-lg mx-auto">
-        <h2 class="text-2xl font-semibold text-green-600 mb-4 border-b pb-2">Form Perubahan</h2>
-        <form method="POST" action="{{ route('profil.update') }}">
-            @csrf
-
-            <div class="mb-4">
-                <label class="block text-gray-700 mb-2 font-medium" for="tinggi_badan">Tinggi Badan (cm)</label>
-                <input type="number" name="tinggi_badan" id="tinggi_badan" value="{{ old('tinggi_badan', $user->tinggi_badan) }}"
-                        class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-                @error('tinggi_badan')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+        <!-- Swiper carousel for team gallery -->
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+        <div class="w-full mt-6">
+            <div class="swiper team-swiper">
+                <div class="swiper-wrapper">
+                    @if(!empty($teamImages) && count($teamImages))
+                        @foreach($teamImages as $img)
+                            <div class="swiper-slide rounded-lg overflow-hidden">
+                                <img src="{{ asset($img) }}" alt="team" loading="lazy" class="w-full h-64 md:h-96 object-cover">
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="swiper-slide rounded-lg overflow-hidden flex items-center justify-center bg-gray-100 h-48">Tidak ada gambar tim</div>
+                    @endif
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
             </div>
+        </div>
 
-            <div class="mb-6">
-                <label class="block text-gray-700 mb-2 font-medium" for="berat_badan">Berat Badan (kg)</label>
-                <input type="number" name="berat_badan" id="berat_badan" value="{{ old('berat_badan', $user->berat_badan) }}"
-                        class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-                @error('berat_badan')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300 w-full">
-                Simpan Perubahan
-            </button>
-        </form>
-    </div>
-
-    {{-- Tab Content: Riwayat Berat Badan (Menggabungkan Grafik & Tabel) --}}
-    <div x-show="tab === 'riwayat'" class="bg-white p-6 rounded-xl shadow-lg">
-        <h2 class="text-2xl font-semibold text-green-600 mb-6 border-b pb-2">Grafik dan Data Riwayat</h2>
-
-        @if ($riwayats->isEmpty())
-            <p class="text-center text-gray-500">Belum ada data riwayat berat badan yang tersimpan.</p>
-        @else
-            {{-- Wrapper dengan Ketinggian Tetap (Memperbaiki Grafik Stretched) --}}
-            <div class="mb-6" style="height: 350px;"> 
-                <canvas id="weightChart" class="w-full h-full"></canvas>
-            </div>
-            {{-- End Wrapper --}}
-
-            {{-- Tabel Riwayat --}}
-            <h3 class="text-xl font-semibold text-gray-700 mb-4 mt-6">Data Riwayat Berat Badan</h3>
-            <table class="w-full border-collapse border border-gray-200 text-sm">
-                <thead class="bg-green-600 text-white">
-                    <tr>
-                        <th class="py-2 px-4">Tanggal</th>
-                        <th class="py-2 px-4">Berat (kg)</th>
-                        <th class="py-2 px-4">Tinggi (cm)</th>
-                        <th class="py-2 px-4">BMI</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($riwayats->reverse() as $r) {{-- Membalik urutan agar data terbaru di atas --}}
-                        <tr class="border-b hover:bg-gray-50">
-                            <td class="py-2 px-4 text-center">{{ $r->created_at->format('d M Y') }}</td>
-                            <td class="py-2 px-4 text-center font-medium">{{ $r->berat_badan }}</td>
-                            <td class="py-2 px-4 text-center">{{ $r->tinggi_badan ?? $user->tinggi_badan }}</td>
-                            <td class="py-2 px-4 text-center">{{ $r->bmi }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            {{-- End Tabel --}}
-        @endif
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                new Swiper('.team-swiper', {
+                    loop: true,
+                    slidesPerView: 1,
+                    spaceBetween: 12,
+                    pagination: { el: '.swiper-pagination', clickable: true },
+                    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+                    breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }
+                });
+            });
+        </script>
     </div>
 </div>
 
-{{-- Skrip Chart.js --}}
-@if (!$riwayats->isEmpty())
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    let chartInstance = null; // Variabel global untuk menyimpan instance chart
-
-    // Fungsi untuk menginisialisasi/merender Chart
-    const initChart = () => {
-        // Cek apakah canvas sudah terlihat (offsetParent bukan null)
-        if (document.getElementById('weightChart').offsetParent === null) {
-            return; 
-        }
-
-        // Hapus instance lama sebelum membuat yang baru
-        if (chartInstance) {
-            chartInstance.destroy();
-        }
-        
-        const ctx = document.getElementById('weightChart').getContext('2d');
-        chartInstance = new Chart(ctx, { // Simpan instance
-            type: 'line',
-            data: {
-                labels: @json($riwayats->pluck('created_at')->map(fn($d) => $d->format('d M'))),
-                datasets: [
-                    { label: 'Berat Badan (kg)', data: @json($riwayats->pluck('berat_badan')), borderColor: 'rgb(34,197,94)', backgroundColor: 'rgba(34,197,94, 0.1)', fill: true, tension: 0.3, borderWidth: 2 },
-                    { label: 'BMI', data: @json($riwayats->pluck('bmi')), borderColor: 'rgb(59,130,246)', backgroundColor: 'rgba(59,130,246, 0.1)', fill: true, tension: 0.3, borderWidth: 2 }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, 
-                plugins: { legend: { position: 'top' }, title: { display: true, text: 'Tren Riwayat Berat Badan dan BMI', font: { size: 16 } } },
-                scales: { y: { beginAtZero: false } }
-            }
-        });
-    };
-    
-    // PENTING: Definisi Alpine Data
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('profilData', () => ({
-            tab: 'edit',
-            init() {
-                // Inisialisasi Chart saat 'tab' berubah ke 'riwayat'
-                this.$watch('tab', value => {
-                    if (value === 'riwayat') {
-                        // Delay singkat untuk memastikan transisi CSS selesai
-                        setTimeout(initChart, 50); 
-                    }
-                });
-                
-                // Inisialisasi saat pertama kali masuk jika tab defaultnya 'riwayat'
-                if (this.tab === 'riwayat') {
-                    initChart();
-                }
-            }
-        }));
-    });
-</script>
-@endif
 @endsection

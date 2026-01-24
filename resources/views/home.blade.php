@@ -3,158 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Go-Healthy - Halaman Awal</title>
+    <title>Kedai Romi - All You Can Drink</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="{{ asset('images/logo.png') }}">
-</head>
-<body class="bg-white text-gray-800">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fcfbf7; }
+        .glass-nav { background: rgba(252, 251, 247, 0.85); backdrop-filter: blur(12px); }
+        
+        /* Animasi Lembut */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float { animation: float 5s ease-in-out infinite; }
 
-    <nav class="flex justify-between items-center px-8 py-4 shadow-sm bg-white fixed w-full top-0 z-50">
-        <div class="flex items-center space-x-2">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-7">
-            <a href="{{ url('/') }}" class="text-green-600 font-bold text-lg hover:text-green-700 transition">Go-Healthy</a>
+        /* Background Bambu Custom */
+        .bamboo-bg {
+            background-image: linear-gradient(to right, rgba(252, 251, 247, 0.92), rgba(252, 251, 247, 0.7)), 
+                              url('https://images.unsplash.com/photo-1470093851219-69951fcbb533?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="text-gray-800 leading-relaxed">
+
+    <nav class="flex justify-between items-center px-6 md:px-12 py-5 glass-nav fixed w-full top-0 z-50 border-b border-green-100/50">
+        <div class="flex items-center space-x-3">
+            <div class="p-2 bg-green-600 rounded-xl shadow-lg shadow-green-200">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-7 w-7 object-contain brightness-0 invert">
+            </div>
+            <a href="{{ url('/') }}" class="text-green-900 font-black text-xl tracking-tighter uppercase">Kedai <span class="text-orange-600">Romi</span></a>
         </div>
 
-            <ul class="hidden md:flex space-x-8 text-sm font-medium">
-            <li><a href="{{ url('/makanan') }}" class="hover:text-green-600 transition">Makanan</a></li>
-            <li><a href="{{ route('bmi') }}" class="hover:text-green-600 transition">Badan massa Index (BMI)</a></li>
-            <li><a href="{{ route('olahraga.index') }}" class="hover:text-green-600 transition">Olahraga</a></li>
+        <ul class="hidden md:flex space-x-10 text-[13px] uppercase tracking-widest font-extrabold text-gray-500">
+            <li><a href="{{ url('/makanan') }}" class="hover:text-green-600 transition">Katalog</a></li>
+            <li><a href="{{ route('bmi') }}" class="hover:text-green-600 transition">Lokasi Toko</a></li>
+            <li><a href="{{ route('olahraga.index') }}" class="hover:text-green-600 transition">Tentang Kami</a></li>
         </ul>
 
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-5">
             @guest
-                <a href="{{ route('login') }}" class="text-sm border border-green-600 text-green-600 px-4 py-1 rounded hover:bg-green-600 hover:text-white transition">
-                    Masuk
-                </a>
-                <a href="{{ route('register') }}" class="text-sm bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 transition">
-                    Daftar
+                <a href="{{ route('login') }}" class="text-sm font-bold text-gray-600 hover:text-green-700">Masuk</a>
+                <a href="{{ route('register') }}" class="text-sm bg-green-600 text-white px-6 py-2.5 rounded-full font-bold hover:bg-green-700 transition shadow-lg shadow-green-200 hover:scale-105 transform">
+                    Join Member
                 </a>
             @endguest
 
             @auth
-                <span class="text-sm text-gray-700">
-                    Hai, <span class="font-semibold text-green-600">{{ Auth::user()->name }}</span>
-                </span>
-
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="ml-4 text-sm text-red-500 hover:underline">Keluar</button>
-                </form>
+                <div class="flex items-center gap-4 bg-white/50 border border-green-100 px-4 py-2 rounded-2xl shadow-sm">
+                    <span class="text-xs font-bold text-gray-500">Member: <span class="text-green-700 uppercase">{{ Auth::user()->name }}</span></span>
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="text-[10px] font-black text-red-400 hover:text-red-600 uppercase border-l border-gray-200 pl-4">Keluar</button>
+                    </form>
+                </div>
             @endauth
         </div>
     </nav>
 
-    <section 
-        class="relative flex flex-col md:flex-row justify-between items-center px-6 md:px-12 pt-32 pb-24 bg-center min-h-screen overflow-hidden"
-        style="
-            background-image: url('{{ asset('images/background-fatsecret.png') }}');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: right center;
-        ">
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-transparent"></div>
+    <section class="relative min-h-screen bamboo-bg flex items-center pt-20">
+        <div class="container mx-auto px-6 md:px-12 grid md:grid-cols-2 gap-12 items-center relative z-10">
+            
+            <div class="space-y-8">
+                <div class="inline-flex items-center space-x-2 bg-white/80 backdrop-blur px-4 py-2 rounded-full border border-orange-100 shadow-sm">
+                    <span class="animate-pulse w-2 h-2 bg-orange-500 rounded-full"></span>
+                    <span class="text-orange-600 text-[11px] font-black uppercase tracking-[0.2em]">The Best Beverage Hub 2026</span>
+                </div>
+                
+                <h1 class="text-6xl md:text-8xl font-black text-green-950 leading-[0.95] tracking-tighter">
+                    Segarkan <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-amber-500">Jiwamu.</span>
+                </h1>
+                
+                <p class="text-gray-600 text-lg md:text-xl font-medium leading-relaxed max-w-md border-l-4 border-green-600 pl-6">
+                    Hadir dengan nuansa estetik Jepang, Kedai Romi menyajikan racikan minuman yang membangkitkan senyum di setiap tegukan.
+                </p>
 
-        <div class="relative z-10 max-w-lg">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-                Mengubah <span class="text-green-600">Penurunan Berat Badan</span><br>
-                Melalui Inovasi Digital
-            </h1>
-            <p class="text-gray-700 mb-6">
-                Kami membantu jutaan orang mencapai tujuan kesehatan mereka dengan solusi digital yang modern dan efektif.
-            </p>
-            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
-                <a href="{{ route('register') }}" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition inline-block">
-                    Mulai Menggunakan Go-Healthy
-                </a>
-                <a href="{{ route('login') }}" class="text-green-700 font-medium hover:underline text-sm">Masuk di web</a>
+                <div class="flex items-center gap-6 pt-4">
+                    <a href="{{ route('register') }}" class="bg-green-700 text-white px-10 py-5 rounded-2xl font-black text-lg hover:bg-green-800 transition-all shadow-2xl shadow-green-900/20 hover:-translate-y-2">
+                        Pesan Sekarang
+                    </a>
+                    <div class="flex -space-x-3">
+                        <div class="w-12 h-12 rounded-full border-4 border-white bg-gray-200 overflow-hidden"><img src="https://i.pravatar.cc/100?u=1"></div>
+                        <div class="w-12 h-12 rounded-full border-4 border-white bg-gray-200 overflow-hidden"><img src="https://i.pravatar.cc/100?u=2"></div>
+                        <div class="w-12 h-12 rounded-full border-4 border-white bg-green-600 flex items-center justify-center text-white text-[10px] font-bold">+2k</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative group">
+                <div class="absolute -inset-10 bg-green-500/10 rounded-full blur-3xl group-hover:bg-orange-500/10 transition duration-1000"></div>
+                <img src="{{ asset('images/background-fatsecret.png') }}" alt="Drink" class="relative z-10 w-full animate-float drop-shadow-[0_50px_50px_rgba(0,0,0,0.15)]">
+                
+                <div class="absolute bottom-10 -left-5 z-20 bg-white/90 backdrop-blur-xl p-6 rounded-[2rem] shadow-2xl border border-white/50 max-w-[200px] hidden md:block">
+                    <div class="text-orange-500 font-black text-2xl mb-1">4.9/5</div>
+                    <div class="text-gray-400 text-xs font-bold uppercase tracking-widest">Customer Satisfaction</div>
+                </div>
             </div>
         </div>
     </section>
 
-    
-    @auth
-        <div class="max-w-5xl mx-auto px-6 mt-8 text-center text-xl text-green-700">
-            Selamat datang, <span class="font-semibold">{{ Auth::user()->name }}</span> di Go-Healthy!
+    <section class="py-12 bg-green-900 mx-4 md:mx-12 rounded-[3rem] -mt-10 relative z-20 shadow-2xl">
+        <div class="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
+            <div>
+                <div class="text-3xl font-black italic">50+</div>
+                <div class="text-green-300 text-[10px] font-bold uppercase tracking-widest">Varian Menu</div>
+            </div>
+            <div>
+                <div class="text-3xl font-black italic">12k</div>
+                <div class="text-green-300 text-[10px] font-bold uppercase tracking-widest">Happy Drinker</div>
+            </div>
+            <div>
+                <div class="text-3xl font-black italic">24/7</div>
+                <div class="text-green-300 text-[10px] font-bold uppercase tracking-widest">Online Support</div>
+            </div>
+            <div>
+                <div class="text-3xl font-black italic">100%</div>
+                <div class="text-green-300 text-[10px] font-bold uppercase tracking-widest">Bahan Alami</div>
+            </div>
         </div>
-    @endauth
-
-    <section class="py-16 bg-white text-center">
-        <h2 class="text-2xl font-bold mb-6 text-gray-900">Temukan Go-Healthy</h2>
-        <p class="max-w-3xl mx-auto text-gray-800 mb-6">
-            Go-Healthy adalah platform kesehatan digital yang membantu kamu mencapai berat badan ideal, Solusi kesehatan digital kami membantu orang mencapai tujuan penurunan berat badan mereka, menemukan informasi nutrisi yang akurat, dan mendukung aplikasi kesehatan global. Melalui ini, kami berdampak positif pada perjalanan berat badan dan kesehatan jutaan orang di seluruh dunia..memahami nutrisi, dan menemukan gaya hidup sehat yang berkelanjutan.
-        </p>
     </section>
 
-    <section class="py-16 md:py-20 bg-white border-t border-gray-100">
-        <div class="container mx-auto px-6 md:px-12 max-w-6xl">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                
-                {{-- KONTEN TEKS KIRI --}}
-                <div class="md:pr-10">
-                    <span class="text-sm font-semibold uppercase tracking-wider text-green-600">
-                        PENCARIAN MAKANAN
-                    </span>
-                    <h2 class="text-4xl md:text-5xl font-bold text-gray-800 leading-tight mt-2 mb-6">
-                        Akses Informasi <br>Nutrisi Secara Instan
-                    </h2>
-                    <p class="text-gray-600 text-lg mb-8">
-                        Ingin mengetahui kandungan nutrisi dan kalori dalam makanan Anda? Alat pencarian kami yang mudah digunakan memberikan Anda akses instan ke informasi nutrisi dan kalori yang akurat untuk makanan umum, makanan bermerek, makanan restoran, dan produk supermarket. Dengan basis data lebih dari 1,9 juta makanan yang telah diverifikasi secara global, Anda dapat dengan mudah tetap berada di jalur dengan tujuan penurunan berat badan Anda dengan mengetahui persis apa yang ada dalam makanan Anda.
-                    </p>
-                    <a href="{{ url('/makanan') }}" class="inline-flex items-center text-green-600 font-semibold hover:text-green-700 transition duration-150">
-                        Temukan Fakta untuk Makanan
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+    <section class="py-32 container mx-auto px-6 md:px-12">
+        <div class="bg-white rounded-[4rem] overflow-hidden border border-gray-100 shadow-sm flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 p-12 md:p-20 space-y-6">
+                <h2 class="text-4xl md:text-5xl font-black text-green-950 leading-tight">Platform Digital <br> Jajanan <span class="text-orange-600 underline">Viral.</span></h2>
+                <p class="text-gray-500 font-medium">Cari minuman impianmu, temukan nutrisinya, dan nikmati sensasi kesegaran yang belum pernah ada sebelumnya. Kami hadir untuk menuntaskan dahaga dan rasa penasaranmu.</p>
+                <div class="pt-4">
+                    <a href="{{ url('/makanan') }}" class="inline-flex items-center text-green-700 font-black uppercase text-sm tracking-widest group">
+                        Jelajahi Sekarang 
+                        <span class="ml-3 group-hover:ml-5 transition-all">→</span>
                     </a>
                 </div>
+            </div>
+            <div class="md:w-1/2 p-6">
+                <img src="{{ asset('images/nutrisi.png') }}" class="rounded-[3rem] w-full object-cover shadow-2xl">
+            </div>
+        </div>
+    </section>
 
-                {{-- GAMBAR KANAN --}}
-                <div class="md:order-last order-first">
-                    {{-- Ganti dengan path gambar Anda yang sesuai, misal: asset('images/food_scan.jpg') --}}
-                    <img src="{{ asset('images/nutrisi.webp') }}" alt="Akses Informasi Nutrisi" class="rounded-2xl shadow-xl w-full max-h-[400px] object-cover">
+    <section class="pb-32 container mx-auto px-6 md:px-12">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 px-4">
+            <h2 class="text-4xl font-black text-green-950">Top <span class="text-orange-600">Choices.</span></h2>
+            <p class="text-gray-400 font-bold">Paling banyak dipesan minggu ini.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div class="group relative pt-20">
+                <div class="absolute inset-0 bg-white rounded-[3rem] shadow-xl group-hover:shadow-green-100 transition-all border border-gray-50"></div>
+                <div class="relative z-10 px-8 pb-10 text-center">
+                    <img src="{{ asset('images/minuman-manis.webp') }}" class="w-48 h-48 mx-auto -mt-32 object-cover rounded-full border-8 border-white shadow-2xl group-hover:scale-110 transition-transform">
+                    <h3 class="mt-6 text-2xl font-black text-green-950">Sweet Berry</h3>
+                    <p class="text-gray-400 text-sm mt-2 font-medium">Perpaduan buah berry segar dengan foam susu lembut.</p>
                 </div>
+            </div>
+            
+            <div class="group relative pt-20">
+                <div class="absolute inset-0 bg-white rounded-[3rem] shadow-xl group-hover:shadow-green-100 transition-all border border-gray-50"></div>
+                <div class="relative z-10 px-8 pb-10 text-center">
+                    <img src="{{ asset('images/coffee.webp') }}" class="w-48 h-48 mx-auto -mt-32 object-cover rounded-full border-8 border-white shadow-2xl group-hover:scale-110 transition-transform">
+                    <h3 class="mt-6 text-2xl font-black text-green-950">Kyoto Coffee</h3>
+                    <p class="text-gray-400 text-sm mt-2 font-medium">Biji kopi pilihan dengan aroma bambu yang menenangkan.</p>
+                </div>
+            </div>
 
+            <div class="group relative pt-20">
+                <div class="absolute inset-0 bg-white rounded-[3rem] shadow-xl group-hover:shadow-green-100 transition-all border border-gray-50"></div>
+                <div class="relative z-10 px-8 pb-10 text-center">
+                    <img src="{{ asset('images/minuman-soda.webp') }}" class="w-48 h-48 mx-auto -mt-32 object-cover rounded-full border-8 border-white shadow-2xl group-hover:scale-110 transition-transform">
+                    <h3 class="mt-6 text-2xl font-black text-green-950">Soda Gembira</h3>
+                    <p class="text-gray-400 text-sm mt-2 font-medium">Kesegaran klasik dengan sentuhan modern Kedai Romi.</p>
+                </div>
             </div>
         </div>
     </section>
 
-
-    <section class="py-16 bg-white text-center">
-        <h2 class="text-2xl font-bold mb-10 text-gray-800">Rekomendasi Kesehatan</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 px-6 md:px-10 max-w-6xl mx-auto">
-
-            <div class="shadow-lg rounded-2xl p-6 hover:shadow-2xl transition border border-gray-100">
-                <img src="{{ asset('images/makanan.jpg') }}" alt="Makanan Sehat" class="rounded-xl w-full h-48 object-cover mb-4">
-                <h3 class="text-xl font-semibold mb-2 text-green-700">Makanan Sehat</h3>
-                <p class="text-gray-600 text-sm">Rekomendasi makanan bernutrisi tinggi untuk mendukung gaya hidup sehat.</p>
+    <footer class="bg-white border-t border-gray-100 pt-24 pb-12">
+        <div class="container mx-auto px-6 md:px-12 grid md:grid-cols-4 gap-12">
+            <div class="md:col-span-2 space-y-6">
+                <h3 class="text-3xl font-black text-green-950 italic">Kedai Romi.</h3>
+                <p class="text-gray-400 max-w-sm font-medium leading-loose">Terima kasih telah menjadi bagian dari perjalanan kami menghadirkan kesegaran digital di Indonesia.</p>
             </div>
-
-            <div class="shadow-lg rounded-2xl p-6 hover:shadow-2xl transition border border-gray-100">
-                <img src="{{ asset('images/olahraga.jpg') }}" alt="Olahraga" class="rounded-xl w-full h-48 object-cover mb-4">
-                <h3 class="text-xl font-semibold mb-2 text-green-700">Olahraga Rekomendasi</h3>
-                <p class="text-gray-600 text-sm">Kumpulan olahraga efektif untuk membakar kalori dan menjaga kebugaran tubuh.</p>
+            <div class="space-y-6">
+                <h4 class="text-[11px] font-black uppercase tracking-[0.3em] text-orange-600">Company</h4>
+                <ul class="space-y-4 font-bold text-gray-600 text-sm">
+                    <li><a href="#" class="hover:text-green-600">Our Story</a></li>
+                    <li><a href="#" class="hover:text-green-600">Privacy Policy</a></li>
+                </ul>
             </div>
-
-            <div class="shadow-lg rounded-2xl p-6 hover:shadow-2xl transition border border-gray-100">
-                <img src="{{ asset('images/kalori.jpg') }}" alt="Kalori" class="rounded-xl w-full h-48 object-cover mb-4">
-                <h3 class="text-xl font-semibold mb-2 text-green-700">Kalori Ideal</h3>
-                <p class="text-gray-600 text-sm">Panduan jumlah kalori harian sesuai kebutuhan tubuhmu.</p>
+            <div class="space-y-6">
+                <h4 class="text-[11px] font-black uppercase tracking-[0.3em] text-orange-600">Social</h4>
+                <div class="flex gap-4">
+                    <div class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-green-600 hover:text-white transition cursor-pointer font-black">IG</div>
+                    <div class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-green-600 hover:text-white transition cursor-pointer font-black">TW</div>
+                </div>
             </div>
-
         </div>
-    </section>
-
-    <section class="py-16 bg-green-600 text-white text-center">
-        <h2 class="text-3xl font-bold mb-4">Mulai Gaya Hidup Sehat Sekarang</h2>
-        <p class="mb-6">Bergabunglah dengan jutaan pengguna yang telah memulai perjalanan sehat mereka bersama Go-Healthy.</p>
-        <a href="{{ route('register') }}" class="bg-white text-green-600 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition">Buat Akun Gratis</a>
-    </section>
-
-    <footer class="py-8 bg-gray-900 text-gray-300 text-center text-sm">
-        <div class="mb-4">
-            <a href="#" class="mx-2 hover:text-white">Tentang Kami</a> |
-            <a href="#" class="mx-2 hover:text-white">Kebijakan Privasi</a> |
-            <a href="#" class="mx-2 hover:text-white">Kontak</a>
+        <div class="container mx-auto px-6 md:px-12 mt-20 pt-8 border-t border-gray-50 text-center text-gray-400 text-[10px] font-black tracking-widest uppercase">
+            © 2026 KEDAI ROMI HUB — CRAFTED BY ROMI YAHYA
         </div>
-        <p>© 2025 Go-Healthy | Dibuat oleh <span class="text-green-400 font-semibold">Romi Yahya</span></p>
     </footer>
 
 </body>

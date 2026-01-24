@@ -14,6 +14,14 @@
             <textarea name="deskripsi" class="w-full border rounded p-2" rows="4" required></textarea>
         </div>
         <div class="mb-3">
+            <label class="block font-medium mb-1">Harga (IDR)</label>
+            <input type="number" name="price" step="0.01" min="0" class="w-full border rounded p-2" required>
+        </div>
+        <div class="mb-3">
+            <label class="block font-medium mb-1">Kategori</label>
+            <input type="text" name="kategori" class="w-full border rounded p-2" placeholder="Contoh: Minuman, Snack, Makanan Berat">
+        </div>
+        <div class="mb-3">
             <label class="block font-medium mb-1">Gambar</label>
             <input type="file" name="gambar" class="w-full">
         </div>

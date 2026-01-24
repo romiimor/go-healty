@@ -25,6 +25,7 @@ class User extends Authenticatable
         'usia',
         'tinggi_badan',
         'berat_badan',
+        'role',
     ];
 
 
@@ -46,4 +47,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Check if user is admin.
+     * Supports either a `role` == 'admin' or legacy `is_admin` flag.
+     */
+    public function isAdmin()
+    {
+        if (!empty($this->role)) {
+            return $this->role === 'admin';
+        }
+
+        return isset($this->is_admin) && $this->is_admin == 1;
+    }
 }

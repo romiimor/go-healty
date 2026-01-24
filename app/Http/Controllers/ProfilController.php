@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\WeightHistory; // Pastikan model ini diimport
+use App\Models\About;
+use Illuminate\Support\Facades\File;
 
 class ProfilController extends Controller
 {
@@ -33,8 +35,20 @@ class ProfilController extends Controller
         });
 
 
-        // Kirimkan data user dan riwayat ke view
-        return view('profil.edit', compact('user', 'riwayats'));
+        $about = About::first();
+
+        // ambil file gambar di public/images/team jika ada
+        $teamImages = [];
+        $teamPath = public_path('images/team');
+        if (File::exists($teamPath)) {
+            $files = File::files($teamPath);
+            foreach ($files as $f) {
+                $teamImages[] = 'images/team/' . $f->getFilename();
+            }
+        }
+
+        // Kirimkan data user, riwayat, about, dan teamImages ke view
+        return view('profil.edit', compact('user', 'riwayats', 'about', 'teamImages'));
     }
 
     // ✅ Update data profil
